@@ -1,0 +1,29 @@
+item {
+  id: 1
+  name: 'taco'
+}
+
+item {
+  id: 2
+  name: 'farbe'
+}
+
+item {
+  id: 3
+  name: 'stift'
+}
+
+item {
+  id: 4
+  name: 'lineal'
+}
+
+item {
+  id: 5
+  name: 'hammer'
+}
+
+item {
+  id: 6
+  name: 'schluessel'
+}
