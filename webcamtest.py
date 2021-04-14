@@ -5,6 +5,7 @@ import pathlib
 import tensorflow as tf
 import cv2
 import argparse
+import time
 
 tf.get_logger().setLevel('ERROR')  # Suppress TensorFlow logging (2)
 
@@ -84,7 +85,15 @@ videostream = cv2.VideoCapture(0)
 ret = videostream.set(3, 1280)
 ret = videostream.set(4, 720)
 
+catchFirstImage = 0
+
 while True:
+
+    if catchFirstImage == 1:
+        print("sleep 10s")
+        time.sleep(10)
+        catchFirstImage = 2
+
 
     # Acquire frame and expand frame dimensions to have shape: [1, None, None, 3]
     # i.e. a single-column array, where each item in the column has the pixel RGB value
@@ -135,6 +144,7 @@ while True:
             object_name = category_index[int(classes[i])][
                 'name']  # Look up object name from "labels" array using class index
             label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
+
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
             label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
             cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10),
@@ -142,6 +152,23 @@ while True:
                           cv2.FILLED)  # Draw white box to put label text in
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
                         2)  # Draw label text
+
+
+
+
+            if catchFirstImage == 0:
+                catchFirstImage = 1
+                firstImage = object_name
+                print("first image is: ")
+                print(firstImage)
+            else:
+                if object_name == firstImage:
+                    print("found Image")
+                    print(firstImage)
+                    print(object_name)
+
+
+
 
     cv2.putText(frame, 'Objects Detected : ' + str(count), (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (70, 235, 52), 2,
                 cv2.LINE_AA)
